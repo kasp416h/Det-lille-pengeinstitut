@@ -1,22 +1,35 @@
-﻿namespace BLL
+﻿using DAL;
+
+namespace BLL
 {
-    public static class Customers
+    public class Customers
     {
-        public static void CreateCustomer()
+        private JsonHandler _JsonHandler;
+        public Customers()
         {
-            Console.WriteLine("Kunde CPR");
-            string customerCPR = Console.ReadLine();
-
-            Console.WriteLine("Kunde navn");
-            string customerName = Console.ReadLine();
-
-            DAL.Customers.CreateCustomer(customerCPR, customerName);
-
-            Console.WriteLine($"Ny konti oprettede for {customerName}");
+            _JsonHandler = new JsonHandler("C:\\Users\\HFGF\\source\\repos\\Frontend\\DAL\\Customers.json");
         }
-        public static void DeleteCustomer(string customerCPR)
+        public void CreateCustomer(string customerCPR, string customerName)
         {
-            DAL.Customers.DeleteCustomer(customerCPR);
+            List<Customer> customers = _JsonHandler.Read<Customer>();
+
+            Customer newCustomer = new Customer { CPR = customerCPR, name = customerName };
+
+            customers.Add(newCustomer);
+
+            _JsonHandler.Write(customers);
+        }
+        public Customer DeleteCustomer(string customerCPR)
+        {
+            List<Customer> customers = _JsonHandler.Read<Customer>();
+
+            Customer? customer = customers.FirstOrDefault(customer => customer.CPR == customerCPR);
+
+            customers.Remove(customer);
+
+            _JsonHandler.Write(customers);
+
+            return customer;
         }
     }
 }

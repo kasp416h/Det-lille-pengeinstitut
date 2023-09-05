@@ -1,40 +1,66 @@
-﻿namespace BLL
+﻿using DAL;
+
+namespace BLL
 {
-    public static class Accounts
+    public class Accounts
     {
-        public static void CreateAccount()
+        private JsonHandler _JsonHandler;
+        public Accounts()
         {
-            Console.WriteLine("Konti navn");
-            string accountName = Console.ReadLine();
-
-            Console.WriteLine("Kunde id");
-            string customerId = Console.ReadLine();
-
-            DAL.Accounts.CreateAccount(accountName, customerId);
-
-            Console.WriteLine($"Ny konti oprettede for {accountName}");
+            _JsonHandler = new JsonHandler("C:\\Users\\HFGF\\source\\repos\\Frontend\\DAL\\Accounts.json");
         }
-        public static void GetAccounts()
+        public void CreateAccount(string accountName, string customerId)
         {
-            List<DAL.Account> accounts = DAL.Accounts.GetAccounts();
+            Account newAccount = new Account { name = accountName, accountId = Guid.NewGuid().ToString(), customerRelation = customerId, balance = 0 };
 
-            foreach (DAL.Account account in accounts)
+            List<Account> accounts = _JsonHandler.Read<Account>();
+            
+            accounts.Add(newAccount);
+
+            _JsonHandler.Write(accounts);
+        }
+        public List<Account> GetAccounts()
+        {
+            List<Account> accounts = _JsonHandler.Read<Account>();
+
+            return accounts;
+        }
+        public int FullBalance()
+        {
+            int fullBalance = 0;
+
+            List<Account> accounts = _JsonHandler.Read<Account>();
+
+            foreach (Account account in accounts)
             {
-                Console.WriteLine($"Konti navn: {account.name}, Konti id: {account.accountId}, Konti ejer id: {account.customerRelation}, Saldo: {account.balance}");
-                Console.WriteLine();
+                fullBalance += account.balance;
             }
+
+            return fullBalance;
         }
-        public static void FullBalance()
+        public Account DeleteAccount(string accountId)
         {
-            Console.WriteLine(DAL.Accounts.FullBalance());
+            List<Account> accounts = _JsonHandler.Read<Account>();
+
+            Account? account = accounts.FirstOrDefault(account => account.accountId == accountId);
+
+            accounts.Remove(account);
+
+            _JsonHandler.Write(accounts);
+
+            return account;
         }
-        public static void DeleteAccount(string accountId)
+        public Account InsertMoney(string accountId, int money)
         {
-            DAL.Accounts.DeleteAccount(accountId);
-        }
-        public static void InsertMoney(string accountId, int money)
-        {
-            DAL.Accounts.InsertMoney(accountId, money);
+            List<Account> accounts = _JsonHandler.Read<Account>();
+
+            Account? account = accounts.FirstOrDefault(account => account.accountId == accountId);
+
+            account.balance += money;
+
+            _JsonHandler.Write(accounts);
+
+            return account;
         }
     }
 }

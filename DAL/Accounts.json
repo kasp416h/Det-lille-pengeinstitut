@@ -4,5 +4,11 @@
     "accountId": "480dc6eb-214a-4830-984c-c88c60a91c92",
     "customerRelation": "73821gdyawud1293",
     "balance": 700
+  },
+  {
+    "name": "Marcus Bager",
+    "accountId": "7677af63-8db8-4a6a-9d8c-c1a3342d0a43",
+    "customerRelation": "89312hdwuaid1938",
+    "balance": 900
   }
 ]
