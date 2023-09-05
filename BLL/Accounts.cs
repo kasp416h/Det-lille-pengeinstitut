@@ -5,9 +5,9 @@ namespace BLL
     public class Accounts
     {
         private JsonHandler _JsonHandler;
-        public Accounts()
+        public Accounts(JsonHandler jsonHandler)
         {
-            _JsonHandler = new JsonHandler("C:\\Users\\HFGF\\source\\repos\\Frontend\\DAL\\Accounts.json");
+            _JsonHandler = jsonHandler;
         }
         public void CreateAccount(string accountName, string customerId)
         {
@@ -27,14 +27,9 @@ namespace BLL
         }
         public int FullBalance()
         {
-            int fullBalance = 0;
-
             List<Account> accounts = _JsonHandler.Read<Account>();
 
-            foreach (Account account in accounts)
-            {
-                fullBalance += account.balance;
-            }
+            int fullBalance = accounts.Sum(account => account.balance);
 
             return fullBalance;
         }

@@ -1,4 +1,5 @@
 ﻿using BLL;
+using DAL;
 
 namespace Frontend
 {
@@ -17,8 +18,8 @@ namespace Frontend
 
             int option = int.Parse(Console.ReadLine());
 
-            Accounts Accounts = new Accounts();
-            Customers Customers = new Customers();
+            Accounts Accounts = new Accounts(new JsonHandler("C:\\Users\\HFGF\\source\\repos\\Frontend\\DAL\\Accounts.json"));
+            Customers Customers = new Customers(new JsonHandler("C:\\Users\\HFGF\\source\\repos\\Frontend\\DAL\\Customers.json"));
             
             switch (option)
             {

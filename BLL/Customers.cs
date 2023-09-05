@@ -5,9 +5,9 @@ namespace BLL
     public class Customers
     {
         private JsonHandler _JsonHandler;
-        public Customers()
+        public Customers(JsonHandler jsonHandler)
         {
-            _JsonHandler = new JsonHandler("C:\\Users\\HFGF\\source\\repos\\Frontend\\DAL\\Customers.json");
+            _JsonHandler = jsonHandler;
         }
         public void CreateCustomer(string customerCPR, string customerName)
         {
